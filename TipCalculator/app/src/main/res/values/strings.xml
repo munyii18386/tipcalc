@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Tip Calculator</string>
     <string name="amountBox">Enter Amount</string>
-    <string name="tip_button">TIP</string>
+    <string name="tipButton">TIP</string>
+    <!--<string-array name="tipOptions">-->
+        <!--<item>10%</item>-->
+        <!--<item>15%</item>-->
+        <!--<item>18%</item>-->
+        <!--<item>20%</item>-->
+    <!--</string-array>-->
 </resources>
