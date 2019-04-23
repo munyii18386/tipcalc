@@ -25,15 +25,15 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <!--<Spinner-->
-            <!--android:id="@+id/spinner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintRight_toRightOf="parent"-->
-            <!--android:layout_marginBottom="380dp"-->
-            <!--app:layout_constraintHorizontal_bias="0.245"/>-->
+    <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginBottom="380dp"
+            app:layout_constraintHorizontal_bias="0.245"/>
 
     <Button
             android:id="@+id/tipButton"

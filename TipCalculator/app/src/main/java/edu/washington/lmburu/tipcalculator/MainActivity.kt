@@ -40,10 +40,7 @@ class MainActivity : AppCompatActivity() {
                 var decimalCount = 0
                 if (amountVal.contains(".")) decimalCount = amountVal.split(".").last().length
                 amountBox.error = if (decimalCount > 2) "acceptable currency format: $00.00" else null
-//                Log.i(TAG, "amount entered is:  ${amountVal}")
-//                Log.i(TAG, "number of decimal is $decimalCount")
                 when {
-                    amountVal == "" -> tipButton.isClickable = false
                     amountVal == "$" -> tipButton.isClickable = false
                     amountVal.contains(".") && decimalCount == 0 -> tipButton.isClickable = false
                     amountVal.contains(".") && decimalCount == 1 -> tipButton.isClickable = false
@@ -57,14 +54,34 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, x: Int, y: Int, z: Int) {}
         })
 
+//       create and populate spinner
+        ArrayAdapter.createFromResource(
+            this@MainActivity,
+            R.array.tipOptions,
+            android.R.layout.simple_spinner_item
+        )
+            .also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinner.adapter = adapter}
+
+//        retrieve selection from spinner
+        var item = 0
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                item = parent?.getItemAtPosition(position).toString().split("%").first().toInt()
+            }
+        }
+
 //        Take the following actions once TIP button is clicked.
         tipButton.setOnClickListener {
             val pennies = calculatePennies(amountBox.text.toString())
-            val tipAmount = String.format("%.2f", pennies * 0.15 / 100).toDouble()
-//            val updatedAmount =  String.format("%.2f", (pennies + (pennies * 0.15)) / 100).toDouble()
-//            Log.i(TAG, "int value $pennies")
-//            Log.i(TAG, "tip Amount $tipAmount")
-//            Log.i(TAG, "Amount + tip is  $updatedAmount")
+            var percent: Double =  item  / 100.0
+            val tipAmount = String.format("%.2f", (pennies * percent) / 100).toDouble()
             Toast.makeText(this@MainActivity, "$$tipAmount", Toast.LENGTH_LONG).show()
         }
     }
@@ -73,22 +90,29 @@ class MainActivity : AppCompatActivity() {
     private fun calculatePennies(s: String): Int {
         var dollar = 0
         var cent = 0
-        try {
-            dollar = s.split("$", ".").get(1).toInt()
-            cent = s.split("$", ".").last().toInt()
-
-        } catch (nfe: NumberFormatException) {
-            // not a valid int. No dollar amount provided.
-            if (s.split("$", ".").get(1).isNullOrBlank()) {
+        if(s.contains(".")) {
+            try {
+                dollar = s.split("$", ".").get(1).toInt()
                 cent = s.split("$", ".").last().toInt()
-            } else if (s.split("$", ".").last().isNullOrBlank()) {
-                cent = 0
+            } catch (nfe: NumberFormatException) {
+                // not a valid int. No dollar amount provided.
+                if (s.split("$", ".").get(1).isNullOrBlank()) {
+                    cent = s.split("$", ".").last().toInt()
+                } else if (s.split("$", ".").last().isNullOrBlank()) {
+                    cent = 0
+                }
+            }
+        } else{
+            try {
+                dollar = s.split("$").last().toInt()
+            } catch (nfe: java.lang.NumberFormatException   ){
+                //no valid dollar amount
             }
         }
-//        Log.i(TAG,"My dollar is $dollar and my cent is $cent")
         return dollar * 100 + cent
     }
 }
+
 
 
 
