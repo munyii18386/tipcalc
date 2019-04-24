@@ -9,7 +9,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import android.text.InputFilter
 import android.view.View
 import android.widget.AdapterView
 
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 if (amountVal.contains(".")) decimalCount = amountVal.split(".").last().length
                 amountBox.error = if (decimalCount > 2) "acceptable currency format: $00.00" else null
                 when {
-                    amountVal == "$" -> tipButton.isClickable = false
+                    amountVal.equals("$") -> tipButton.isClickable = false
                     amountVal.contains(".") && decimalCount == 0 -> tipButton.isClickable = false
                     amountVal.contains(".") && decimalCount == 1 -> tipButton.isClickable = false
                     decimalCount > 2 -> tipButton.isClickable = false
